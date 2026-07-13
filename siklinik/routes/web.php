@@ -7,6 +7,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\MedicalRecordPdfController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SpecializationController;
@@ -25,7 +26,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Bisa diakses pasien (pemilik) maupun dokter (yang menangani) - otorisasi dicek di controller.
     Route::get('/rekam-medis/{appointment}/pdf', [MedicalRecordPdfController::class, 'download'])->name('rekam-medis.pdf');
 });
 
@@ -36,6 +36,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('doctors', DoctorController::class)->except('show');
     Route::resource('schedules', ScheduleController::class)->except('show');
     Route::resource('specializations', SpecializationController::class)->except('show');
+    Route::resource('patients', PatientController::class)->only(['index', 'show', 'edit', 'update']);
 });
 
 // ================================================================

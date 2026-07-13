@@ -1,0 +1,76 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Edit Data Pasien
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+
+                @if ($errors->any())
+                    <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
+                        <ul class="list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('patients.update', $patient) }}" method="POST" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700">Nama Lengkap</label>
+                        <input type="text" name="name" value="{{ old('name', $patient->user->name) }}" class="mt-1 block w-full border-gray-300 rounded" required>
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700">Email</label>
+                        <input type="email" name="email" value="{{ old('email', $patient->user->email) }}" class="mt-1 block w-full border-gray-300 rounded" required>
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700">NIK</label>
+                        <input type="text" name="nik" value="{{ old('nik', $patient->nik) }}" class="mt-1 block w-full border-gray-300 rounded">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-medium text-sm text-gray-700">Tanggal Lahir</label>
+                            <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $patient->date_of_birth?->format('Y-m-d')) }}" class="mt-1 block w-full border-gray-300 rounded">
+                        </div>
+                        <div>
+                            <label class="block font-medium text-sm text-gray-700">Jenis Kelamin</label>
+                            <select name="gender" class="mt-1 block w-full border-gray-300 rounded">
+                                <option value="">-- Pilih --</option>
+                                <option value="L" {{ old('gender', $patient->gender) === 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="P" {{ old('gender', $patient->gender) === 'P' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700">Nomor Telepon</label>
+                        <input type="text" name="phone" value="{{ old('phone', $patient->phone) }}" class="mt-1 block w-full border-gray-300 rounded">
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700">Alamat</label>
+                        <textarea name="address" rows="3" class="mt-1 block w-full border-gray-300 rounded">{{ old('address', $patient->address) }}</textarea>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <button type="submit" class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700">
+                            Update
+                        </button>
+                        <a href="{{ route('patients.index') }}" class="text-gray-600 hover:underline">Batal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
